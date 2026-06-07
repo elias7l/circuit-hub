@@ -26,6 +26,9 @@
   --amber-bg: #fdf6e3;
   --red: #6b1a1a;
   --red-bg: #fdf0f0;
+  --est-blue: #0072ce;
+  --est-black: #111110;
+  --est-white: #f7f7f5;
   --radius: 8px;
   --radius-lg: 12px;
   --shadow: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
@@ -53,6 +56,7 @@ body {
   padding: 0 20px;
   display: flex; align-items: center; gap: 2px;
   height: 52px;
+  overflow-x: auto;
 }
 .brand {
   font-size: 15px; font-weight: 600;
@@ -67,7 +71,15 @@ body {
 }
 .nav-btn:hover { background: var(--surface2); color: var(--text); }
 .nav-btn.active { background: var(--accent); color: #fff; }
-.nav-spacer { flex: 1; }
+.nav-btn.est-btn { display: flex; align-items: center; gap: 5px; }
+.nav-btn.est-btn .est-flag-mini {
+  display: inline-flex; flex-direction: column;
+  width: 16px; height: 11px; border-radius: 2px; overflow: hidden; flex-shrink: 0;
+}
+.nav-btn.est-btn .est-flag-mini span {
+  flex: 1; display: block;
+}
+.nav-spacer { flex: 1; min-width: 8px; }
 .updated-tag {
   font-size: 11px; color: var(--text3);
   font-family: 'DM Mono', monospace;
@@ -85,6 +97,106 @@ body {
 .page-header { margin-bottom: 24px; }
 .page-header h1 { font-size: 22px; font-weight: 600; letter-spacing: -.4px; }
 .page-header p { color: var(--text3); font-size: 13px; margin-top: 4px; }
+
+/* ── ESTONIA HEADER ── */
+.est-header {
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 24px;
+}
+.est-flag-large {
+  display: flex; flex-direction: column;
+  width: 48px; height: 32px; border-radius: 4px;
+  overflow: hidden; flex-shrink: 0;
+  box-shadow: 0 1px 4px rgba(0,0,0,.15);
+}
+.est-flag-large span { flex: 1; display: block; }
+.est-header-text h1 { font-size: 22px; font-weight: 600; letter-spacing: -.4px; }
+.est-header-text p { color: var(--text3); font-size: 13px; margin-top: 4px; }
+
+/* ── ESTONIA STATS BAR ── */
+.est-stats {
+  display: flex; gap: 10px; flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.est-stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  display: flex; flex-direction: column; gap: 2px;
+  min-width: 110px;
+}
+.est-stat-num {
+  font-size: 22px; font-weight: 600;
+  font-family: 'DM Mono', monospace;
+  color: var(--text);
+}
+.est-stat-label {
+  font-size: 11px; color: var(--text3);
+  text-transform: uppercase; letter-spacing: .06em; font-weight: 600;
+}
+
+/* ── ESTONIA PLAYER CARDS ── */
+.est-section-title {
+  font-size: 11px; font-weight: 600; color: var(--text3);
+  text-transform: uppercase; letter-spacing: .1em;
+  margin: 20px 0 10px;
+  display: flex; align-items: center; gap: 8px;
+}
+.est-section-title::after {
+  content: ''; flex: 1; height: 1px; background: var(--border);
+}
+
+.est-player-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.est-player-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 14px 16px;
+  box-shadow: var(--shadow);
+  transition: box-shadow .15s, border-color .15s;
+  position: relative;
+}
+.est-player-card:hover { box-shadow: var(--shadow-md); border-color: var(--border2); }
+.est-player-card .section-badge {
+  position: absolute; top: 12px; right: 12px;
+}
+.est-player-name {
+  font-size: 14px; font-weight: 600;
+  margin-bottom: 6px; padding-right: 60px;
+  letter-spacing: -.2px;
+}
+.est-player-tournament {
+  font-size: 12px; color: var(--text2);
+  margin-bottom: 10px;
+  display: flex; align-items: center; gap: 5px;
+}
+.est-player-tournament svg {
+  flex-shrink: 0; color: var(--text3);
+}
+.est-player-meta {
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+.est-meta-item {
+  display: flex; flex-direction: column; gap: 1px;
+}
+.est-meta-val {
+  font-size: 13px; font-weight: 600;
+  font-family: 'DM Mono', monospace;
+}
+.est-meta-lbl {
+  font-size: 10px; color: var(--text3);
+  text-transform: uppercase; letter-spacing: .05em;
+}
+.est-divider {
+  width: 1px; background: var(--border);
+  align-self: stretch; margin: 0 2px;
+}
 
 /* ── FILTERS BAR ── */
 .filters {
@@ -294,7 +406,6 @@ tbody td { padding: 10px 14px; vertical-align: middle; }
 .modal-close:hover { background: var(--border2); }
 .modal-body { overflow-y: auto; flex: 1; padding: 16px 20px; }
 
-/* section tabs inside modal */
 .seg-tabs {
   display: flex; gap: 4px; margin-bottom: 16px;
   background: var(--surface); border-radius: 8px;
@@ -308,7 +419,6 @@ tbody td { padding: 10px 14px; vertical-align: middle; }
 }
 .seg-tab.active { background: var(--bg); color: var(--text); box-shadow: var(--shadow); }
 
-/* modal filters */
 .modal-filters {
   display: flex; flex-wrap: wrap; gap: 8px;
   margin-bottom: 14px;
@@ -323,46 +433,17 @@ tbody td { padding: 10px 14px; vertical-align: middle; }
   cursor: pointer;
 }
 
-/* ── DRAW BRACKET ── */
-.draw-wrap { overflow-x: auto; padding-bottom: 8px; }
-.bracket {
-  display: flex; gap: 0; min-width: max-content;
-}
-.round-col { display: flex; flex-direction: column; justify-content: space-around; }
-.round-head {
-  font-size: 10px; font-weight: 700; color: var(--text3);
-  text-transform: uppercase; letter-spacing: .1em;
-  padding: 6px 12px; text-align: center;
-  border-bottom: 1px solid var(--border);
-  background: var(--surface);
-}
-.match-pair {
-  display: flex; flex-direction: column;
-  margin: 4px 8px; position: relative;
-}
-.match-player {
-  padding: 6px 10px; font-size: 12px;
-  border: 1px solid var(--border); background: var(--bg);
-  min-width: 160px; white-space: nowrap;
-  overflow: hidden; text-overflow: ellipsis;
-  display: flex; align-items: center; gap: 6px;
-}
-.match-player:first-child { border-radius: 6px 6px 0 0; border-bottom: none; }
-.match-player:last-child { border-radius: 0 0 6px 6px; }
-.match-player.winner { font-weight: 600; background: var(--surface); }
-.match-player .score {
-  margin-left: auto; font-family: 'DM Mono', monospace;
-  font-size: 11px; color: var(--text3);
-}
-
 /* ── RESPONSIVE ── */
 @media (max-width: 600px) {
-  .topbar { padding: 0 12px; gap: 0; overflow-x: auto; }
+  .topbar { padding: 0 12px; gap: 0; }
   .nav-btn { padding: 6px 9px; font-size: 12px; }
   .container { padding: 20px 12px; }
   .t-grid { grid-template-columns: 1fr; }
   .filters { padding: 12px; }
   .filter-group select, .filter-group input { min-width: 120px; }
+  .est-player-grid { grid-template-columns: 1fr; }
+  .est-stats { gap: 8px; }
+  .est-stat-card { min-width: 90px; padding: 10px 12px; }
 }
 </style>
 </head>
@@ -375,6 +456,14 @@ tbody td { padding: 10px 14px; vertical-align: middle; }
   <button class="nav-btn" onclick="showPage('entries-wta')">WTA Entries</button>
   <button class="nav-btn" onclick="showPage('entries-itf')">ITF Entries</button>
   <button class="nav-btn" onclick="showPage('entries-jr')">Junior Entries</button>
+  <button class="nav-btn est-btn" onclick="showPage('estonia')">
+    <span class="est-flag-mini">
+      <span style="background:#0072ce"></span>
+      <span style="background:#111110"></span>
+      <span style="background:#ffffff;border-bottom:1px solid #ddd"></span>
+    </span>
+    Estonia
+  </button>
   <div class="nav-spacer"></div>
   <span class="updated-tag" id="updated-tag">Loading...</span>
 </div>
@@ -474,6 +563,26 @@ tbody td { padding: 10px 14px; vertical-align: middle; }
   </div>
 </div>
 
+<!-- ═══════════════════════════════════════ ESTONIA ═══ -->
+<div class="page" id="page-estonia">
+  <div class="container">
+    <div class="est-header">
+      <div class="est-flag-large">
+        <span style="background:#0072ce"></span>
+        <span style="background:#111110"></span>
+        <span style="background:#ffffff;border-bottom:1px solid #e2e2dd"></span>
+      </div>
+      <div class="est-header-text">
+        <h1>Estonian Players</h1>
+        <p>EST players active in ITF tournaments this week — with born year, age & results</p>
+      </div>
+    </div>
+    <div id="estonia-body">
+      <div class="loading"><div class="spinner"></div><p>Loading Estonian players...</p></div>
+    </div>
+  </div>
+</div>
+
 <!-- ═══════════════════════════════════════ ENTRY MODAL ═══ -->
 <div class="modal-overlay" id="entry-modal" onclick="if(event.target===this)closeModal()">
   <div class="modal">
@@ -530,6 +639,11 @@ function countryLabel(code) {
   return `<span class="country-cell">${flagImg(code)}<span class="country-code">${code}</span></span>`;
 }
 
+function calcAge(birthYear) {
+  if (!birthYear) return null;
+  return new Date().getFullYear() - birthYear;
+}
+
 // ────────────────────────────────────────────────────────
 // NAVIGATION
 // ────────────────────────────────────────────────────────
@@ -552,6 +666,7 @@ function loadPage(id) {
   else if (id === 'entries-wta') loadWtaEntries();
   else if (id === 'entries-itf') loadItfEntries();
   else if (id === 'entries-jr') loadJrEntries();
+  else if (id === 'estonia') loadEstonia();
 }
 
 // ────────────────────────────────────────────────────────
@@ -559,13 +674,11 @@ function loadPage(id) {
 // ────────────────────────────────────────────────────────
 const ITF = 'https://www.itftennis.com/tennis/api';
 const WTA_API = 'https://api.wtatennis.com/tennis';
-// CORS proxy — forwards requests and adds Access-Control-Allow-Origin header
 const PROXY = 'https://corsproxy.io/?url=';
 
 async function itfGet(path, params={}) {
   const url = new URL(ITF + path);
   Object.entries(params).forEach(([k,v]) => url.searchParams.set(k, v));
-  // Try direct first (works for calendar/entry list), fall back to proxy for rankings
   let r;
   try {
     r = await fetch(url.toString(), { headers: { 'Accept': 'application/json' } });
@@ -573,7 +686,6 @@ async function itfGet(path, params={}) {
     r = await fetch(PROXY + encodeURIComponent(url.toString()));
   }
   if (!r.ok) {
-    // retry with proxy
     r = await fetch(PROXY + encodeURIComponent(url.toString()));
     if (!r.ok) throw new Error(`ITF ${r.status}`);
   }
@@ -583,7 +695,6 @@ async function itfGet(path, params={}) {
 async function wtaGet(path, params={}) {
   const url = new URL(WTA_API + path);
   Object.entries(params).forEach(([k,v]) => url.searchParams.set(k, v));
-  // WTA has CORS restrictions — always use proxy
   const r = await fetch(PROXY + encodeURIComponent(url.toString()));
   if (!r.ok) throw new Error(`WTA ${r.status}`);
   return r.json();
@@ -598,7 +709,6 @@ function buildRankingTable(players, prefix) {
   const countryEl = document.getElementById(prefix + '-country');
   const yearEl    = document.getElementById(prefix + '-year');
 
-  // populate filters
   const countries = [...new Set(players.map(p => p.country).filter(Boolean))].sort();
   const years     = [...new Set(players.map(p => p.birth_year).filter(Boolean))].sort((a,b)=>b-a);
 
@@ -758,7 +868,6 @@ function buildTournamentCards(tournaments, bodyId, circuit) {
     return;
   }
 
-  // group by week
   const weeks = {};
   tournaments.forEach(t => {
     const monday = getMonday(t.start_date);
@@ -930,6 +1039,189 @@ function jrLevel(name) {
 }
 
 // ────────────────────────────────────────────────────────
+// ESTONIA PAGE
+// ────────────────────────────────────────────────────────
+async function loadEstonia() {
+  const bodyEl = document.getElementById('estonia-body');
+  const today = new Date().toISOString().slice(0,10);
+  const cutoff = addDays(new Date(), 14).toISOString().slice(0,10);
+
+  try {
+    // 1) Get ITF calendar
+    const data = await itfGet('/TournamentApi/GetCalendar', {
+      circuitCode: 'WT', searchString: '',
+      skip: 0, take: 250,
+      dateFrom: today, dateTo: cutoff,
+      isOrderAscending: 'true', orderField: 'startDate'
+    });
+
+    const tournaments = (data.items||[]).filter(t => {
+      const s = (t.status||t.tournamentStatus||'').toLowerCase();
+      return !s.includes('cancel');
+    }).map(t => ({
+      key: (t.tournamentKey || (t.tournamentLink||'').split('/').pop()||'').toLowerCase(),
+      name: t.tournamentName || '',
+      country: t.hostNationCode || '',
+      surface: t.surfaceDesc || '',
+      level: itfLevel(t.tournamentName||''),
+      start_date: (t.startDate||'').slice(0,10),
+    }));
+
+    // 2) Fetch all entry lists in parallel
+    const results = await Promise.allSettled(
+      tournaments.map(t =>
+        itfGet('/TournamentApi/GetAcceptanceList', {
+          tournamentKey: t.key, circuitCode: 'WT'
+        }).then(d => ({ tournament: t, data: d }))
+      )
+    );
+
+    // 3) Filter EST players from all entry lists
+    const estPlayers = [];
+    for (const res of results) {
+      if (res.status !== 'fulfilled') continue;
+      const { tournament, data } = res.value;
+      let root = [];
+      if (Array.isArray(data) && data.length) {
+        root = data[0].entryClassifications || [];
+      } else if (data && data.entryClassifications) {
+        root = data.entryClassifications;
+      }
+      for (const cls of root) {
+        const code = cls.entryClassificationCode || '';
+        let section;
+        if (['MDA','JR','JA','SE','WC'].includes(code)) section = 'MAIN';
+        else if (code === 'Q') section = 'QUAL';
+        else if (code === 'A') section = 'ALT';
+        else continue;
+        for (const entry of cls.entries || []) {
+          for (const p of entry.players || []) {
+            if ((p.nationalityCode||'').toUpperCase() !== 'EST') continue;
+            const dob = p.dateOfBirth || '';
+            const birthYear = dob ? parseInt(dob.slice(0,4)) : null;
+            estPlayers.push({
+              name: `${p.givenName||''} ${p.familyName||''}`.trim(),
+              country: 'EST',
+              wta_rank: p.atpWtaRank || null,
+              itf_rank: p.itfBTRank || null,
+              birth_year: birthYear,
+              age: calcAge(birthYear),
+              dob_full: dob ? dob.slice(0,10) : null,
+              pos: entry.positionDisplay || '',
+              section,
+              tournament
+            });
+          }
+        }
+      }
+    }
+
+    renderEstoniaPage(estPlayers, bodyEl);
+
+  } catch(e) {
+    bodyEl.innerHTML = `<div class="error-box">Could not load Estonian players: ${e.message}</div>`;
+  }
+}
+
+function renderEstoniaPage(players, bodyEl) {
+  if (!players.length) {
+    bodyEl.innerHTML = `
+      <div class="empty-state">
+        <strong>No Estonian players found</strong>
+        No EST players are currently in ITF WT entry lists for the next 2 weeks.
+      </div>`;
+    return;
+  }
+
+  // Stats
+  const mainCount = players.filter(p => p.section === 'MAIN').length;
+  const qualCount = players.filter(p => p.section === 'QUAL').length;
+  const altCount  = players.filter(p => p.section === 'ALT').length;
+  const tournCount = new Set(players.map(p => p.tournament.key)).size;
+  const uniqueNames = new Set(players.map(p => p.name)).size;
+
+  let html = `
+    <div class="est-stats">
+      <div class="est-stat-card">
+        <div class="est-stat-num">${uniqueNames}</div>
+        <div class="est-stat-lbl">Players</div>
+      </div>
+      <div class="est-stat-card">
+        <div class="est-stat-num">${tournCount}</div>
+        <div class="est-stat-lbl">Tournaments</div>
+      </div>
+      <div class="est-stat-card">
+        <div class="est-stat-num" style="color:var(--blue)">${mainCount}</div>
+        <div class="est-stat-lbl">Main Draw</div>
+      </div>
+      <div class="est-stat-card">
+        <div class="est-stat-num" style="color:var(--green)">${qualCount}</div>
+        <div class="est-stat-lbl">Qualifying</div>
+      </div>
+      ${altCount ? `<div class="est-stat-card">
+        <div class="est-stat-num" style="color:var(--amber)">${altCount}</div>
+        <div class="est-stat-lbl">Alternates</div>
+      </div>` : ''}
+    </div>`;
+
+  // Group by section order: MAIN > QUAL > ALT
+  const sections = [
+    { key: 'MAIN', label: 'Main Draw', badgeClass: 'badge-md', badgeText: 'MD' },
+    { key: 'QUAL', label: 'Qualifying', badgeClass: 'badge-q', badgeText: 'Q' },
+    { key: 'ALT',  label: 'Alternates', badgeClass: 'badge-alt', badgeText: 'Alt' },
+  ];
+
+  for (const sec of sections) {
+    const secPlayers = players.filter(p => p.section === sec.key);
+    if (!secPlayers.length) continue;
+
+    html += `<div class="est-section-title">${sec.label} (${secPlayers.length})</div>
+    <div class="est-player-grid">`;
+
+    for (const p of secPlayers) {
+      const rank = p.wta_rank || p.itf_rank || '—';
+      const born = p.birth_year || '—';
+      const age  = p.age !== null ? p.age : '—';
+      const tFlag = flagImg(p.tournament.country);
+
+      html += `<div class="est-player-card">
+        <span class="section-badge badge ${sec.badgeClass}">${sec.badgeText}</span>
+        <div class="est-player-name">${p.name}</div>
+        <div class="est-player-tournament">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          ${tFlag} ${p.tournament.name}
+          ${p.tournament.level ? `<span class="badge badge-level" style="margin-left:2px">${p.tournament.level}</span>` : ''}
+        </div>
+        <div class="est-player-meta">
+          <div class="est-meta-item">
+            <div class="est-meta-val">${rank}</div>
+            <div class="est-meta-lbl">Rank</div>
+          </div>
+          <div class="est-divider"></div>
+          <div class="est-meta-item">
+            <div class="est-meta-val">${born}</div>
+            <div class="est-meta-lbl">Born</div>
+          </div>
+          <div class="est-divider"></div>
+          <div class="est-meta-item">
+            <div class="est-meta-val">${age}</div>
+            <div class="est-meta-lbl">Age</div>
+          </div>
+          ${p.tournament.surface ? `<div class="est-divider"></div>
+          <div class="est-meta-item">
+            <div class="est-meta-val" style="font-size:12px">${p.tournament.surface}</div>
+            <div class="est-meta-lbl">Surface</div>
+          </div>` : ''}
+        </div>
+      </div>`;
+    }
+    html += `</div>`;
+  }
+
+  bodyEl.innerHTML = html;
+}
+
+// ────────────────────────────────────────────────────────
 // ENTRY LIST MODAL
 // ────────────────────────────────────────────────────────
 let currentModalKey = '';
@@ -942,7 +1234,6 @@ async function openEntryModal(key, circuit) {
   currentModalCircuit = circuit;
   currentSection = 'MAIN';
 
-  // find tournament name
   let tName = key;
   const allLists = { WTA: wtaTournaments, WT: itfWtTournaments, JG: itfJrTournaments };
   const list = allLists[circuit] || [];
@@ -975,13 +1266,8 @@ async function loadWtaEntryList(t) {
   const url = `https://www.wtatennis.com/tournaments/${t.id}/${t.slug}/${t.year}/player-list`;
   const r = await fetch(url);
   const html = await r.text();
-  // parse player IDs from HTML
   const players = [];
-  const re = /href="\/players\/(\d+)\/([^"]+)"/g;
-  let m, current = 'MAIN', seen = new Set();
-  // detect section switches
-  const qualRe = /data-ui-tab="[^"]*qualifying[^"]*"/gi;
-  // simple parse: extract all player hrefs in order
+  let current = 'MAIN', seen = new Set();
   const lines = html.split('\n');
   for (const line of lines) {
     if (/qualifying/i.test(line) && /tab/i.test(line)) current = 'QUAL';
@@ -1123,7 +1409,6 @@ function setUpdated() {
     `Updated ${now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}`;
 }
 
-// Load first page on start
 pageLoaded['rankings-wta'] = true;
 loadWtaRankings();
 </script>
