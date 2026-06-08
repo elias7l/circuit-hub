@@ -1,147 +1,1065 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Home · Circuit Hub</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WTA Tennis</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-:root {
-    --bg: #0f0f13;
-    --surface: #1a1a24;
-    --surface2: #22222f;
-    --accent: #7c6af7;
-    --accent2: #a78bfa;
-    --text: #e8e8f0;
-    --muted: #888899;
-    --border: #2e2e42;
-    --green: #34d399;
-    --yellow: #fbbf24;
-    --red: #f87171;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 14px; }
-a { color: var(--accent2); text-decoration: none; }
-a:hover { text-decoration: underline; }
+  :root {
+    --black: #0a0a0a;
+    --white: #ffffff;
+    --gray-100: #f5f5f5;
+    --gray-200: #e8e8e8;
+    --gray-400: #999;
+    --gray-600: #555;
+    --accent: #c8102e;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    background: var(--white);
+    color: var(--black);
+    min-height: 100vh;
+  }
 
-/* NAV */
-nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 16px; display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
-nav a { display: inline-block; padding: 14px 12px; color: var(--muted); font-size: 13px; font-weight: 500; transition: color .2s; }
-nav a:hover, nav a.active { color: var(--accent2); text-decoration: none; border-bottom: 2px solid var(--accent); }
-.nav-brand { font-weight: 700; color: var(--text) !important; font-size: 15px; margin-right: 8px; border-bottom: none !important; }
+  /* HEADER */
+  header {
+    border-bottom: 2px solid var(--black);
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 100;
+  }
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 22px;
+    letter-spacing: -1px;
+    color: var(--black);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+  }
+  .logo-dot { color: var(--accent); }
+  nav { display: flex; gap: 0; }
+  nav button {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    background: none;
+    border: none;
+    border-left: 1px solid var(--gray-200);
+    padding: 0 14px;
+    height: 56px;
+    cursor: pointer;
+    color: var(--gray-600);
+    transition: all 0.15s;
+  }
+  nav button:hover { background: var(--gray-100); color: var(--black); }
+  nav button.active { background: var(--black); color: var(--white); }
 
-/* LAYOUT */
-.container { max-width: 1100px; margin: 0 auto; padding: 24px 16px; }
-h1 { font-size: 20px; margin-bottom: 4px; }
-h2 { font-size: 16px; color: var(--muted); font-weight: 400; margin-bottom: 20px; }
-.updated { font-size: 12px; color: var(--muted); margin-bottom: 20px; }
+  /* PAGES */
+  .page { display: none; padding: 20px 16px; max-width: 900px; margin: 0 auto; }
+  .page.active { display: block; }
 
-/* FILTERS */
-.filters { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; align-items: center; }
-.filters select, .filters input { background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 7px 10px; border-radius: 6px; font-size: 13px; outline: none; }
-.filters select:focus, .filters input:focus { border-color: var(--accent); }
-.filters label { font-size: 12px; color: var(--muted); }
-.filter-group { display: flex; flex-direction: column; gap: 4px; }
-.badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; }
-.badge-main { background: #1e3a5f; color: #60b4ff; }
-.badge-qual { background: #2d3b1e; color: #86efac; }
-.badge-alt { background: #3b2d1e; color: #fbbf24; }
-.count-badge { background: var(--surface2); border: 1px solid var(--border); color: var(--muted); padding: 2px 8px; border-radius: 12px; font-size: 11px; }
+  /* RANKING PAGE */
+  .page-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 900;
+    margin-bottom: 4px;
+    line-height: 1;
+  }
+  .page-subtitle {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--gray-400);
+    letter-spacing: 0.05em;
+    margin-bottom: 20px;
+  }
 
-/* TABLE */
-.table-wrap { overflow-x: auto; border-radius: 8px; border: 1px solid var(--border); }
-table { width: 100%; border-collapse: collapse; }
-thead th { background: var(--surface2); padding: 10px 12px; text-align: left; font-size: 12px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .05em; border-bottom: 1px solid var(--border); white-space: nowrap; }
-tbody tr { border-bottom: 1px solid var(--border); transition: background .15s; }
-tbody tr:last-child { border-bottom: none; }
-tbody tr:hover { background: var(--surface2); }
-tbody td { padding: 9px 12px; }
-.rank-num { color: var(--accent2); font-weight: 600; font-variant-numeric: tabular-nums; }
-.flag { vertical-align: middle; border-radius: 2px; }
-.no-flag { font-size: 11px; color: var(--muted); }
-.hidden { display: none !important; }
+  .filters-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .search-box {
+    flex: 1;
+    min-width: 180px;
+    border: 1.5px solid var(--black);
+    padding: 9px 12px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 14px;
+    outline: none;
+    background: white;
+  }
+  .search-box:focus { border-color: var(--accent); }
+  select {
+    border: 1.5px solid var(--gray-200);
+    padding: 9px 10px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 13px;
+    background: white;
+    cursor: pointer;
+    outline: none;
+    color: var(--black);
+  }
+  select:focus { border-color: var(--black); }
 
-/* TOURNAMENT CARDS */
-.t-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; margin-top: 8px; }
-.t-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
-.t-card h3 { font-size: 15px; margin-bottom: 6px; }
-.t-card .meta { font-size: 12px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
-.t-card .meta span { display: flex; align-items: center; gap: 4px; }
-.btn { display: inline-block; padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; border: none; }
-.btn-primary { background: var(--accent); color: #fff; }
-.btn-primary:hover { background: var(--accent2); }
+  .ranking-table { width: 100%; border-collapse: collapse; }
+  .ranking-table thead th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    text-align: left;
+    padding: 8px 10px;
+    border-bottom: 1.5px solid var(--black);
+  }
+  .ranking-table tbody tr {
+    border-bottom: 1px solid var(--gray-200);
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+  .ranking-table tbody tr:hover { background: var(--gray-100); }
+  .ranking-table td {
+    padding: 11px 10px;
+    font-size: 14px;
+    vertical-align: middle;
+  }
+  .rank-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--gray-400);
+    width: 36px;
+  }
+  .rank-num.top3 {
+    color: var(--black);
+    font-weight: 600;
+  }
+  .player-name-cell { font-weight: 500; }
+  .player-country {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--gray-600);
+  }
+  .flag-img { width: 20px; height: 14px; object-fit: cover; border: 0.5px solid var(--gray-200); }
+  .points-cell {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    text-align: right;
+  }
+  .loading-msg {
+    text-align: center;
+    padding: 40px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--gray-400);
+  }
+  .error-msg {
+    padding: 16px;
+    border: 1.5px solid var(--accent);
+    background: #fff5f5;
+    font-size: 13px;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
 
-/* WEEK TABS */
-.week-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
-.week-tab { padding: 7px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); font-size: 13px; cursor: pointer; transition: all .2s; }
-.week-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  /* PLAYER PROFILE */
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    background: none;
+    border: 1.5px solid var(--gray-200);
+    padding: 7px 14px;
+    cursor: pointer;
+    margin-bottom: 24px;
+    color: var(--black);
+  }
+  .back-btn:hover { border-color: var(--black); }
 
-/* ENTRY MODAL */
-.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.7); z-index: 100; justify-content: center; align-items: flex-start; padding-top: 40px; }
-.modal-overlay.open { display: flex; }
-.modal { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; width: 95%; max-width: 700px; max-height: 80vh; display: flex; flex-direction: column; }
-.modal-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-.modal-body { overflow-y: auto; padding: 16px 20px; flex: 1; }
-.modal-close { background: none; border: none; color: var(--muted); font-size: 20px; cursor: pointer; line-height: 1; }
+  .profile-header {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    margin-bottom: 28px;
+    padding-bottom: 24px;
+    border-bottom: 1.5px solid var(--black);
+  }
+  .profile-photo-wrap {
+    width: 90px;
+    height: 90px;
+    flex-shrink: 0;
+    border: 1.5px solid var(--gray-200);
+    overflow: hidden;
+    background: var(--gray-100);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .profile-photo-wrap img { width: 100%; height: 100%; object-fit: cover; }
+  .profile-photo-placeholder {
+    width: 90px;
+    height: 90px;
+    flex-shrink: 0;
+    border: 1.5px solid var(--gray-200);
+    background: var(--gray-100);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .profile-photo-placeholder svg { opacity: 0.25; }
+  .profile-info h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 6px;
+  }
+  .profile-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 10px;
+  }
+  .meta-chip {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--gray-600);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .meta-chip span { color: var(--black); font-weight: 500; }
 
-/* SECTION TABS */
-.section-tabs { display: flex; gap: 4px; margin-bottom: 14px; }
-.section-tab { padding: 5px 12px; border-radius: 5px; font-size: 12px; cursor: pointer; border: 1px solid var(--border); background: var(--surface2); color: var(--muted); }
-.section-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .profile-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--gray-200);
+    border: 1px solid var(--gray-200);
+    margin-bottom: 28px;
+  }
+  .stat-box {
+    background: white;
+    padding: 14px 12px;
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 900;
+    line-height: 1;
+  }
+  .stat-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    margin-top: 4px;
+  }
 
-@media (max-width: 600px) {
-    nav { gap: 0; }
-    nav a { padding: 12px 8px; font-size: 12px; }
-    .t-grid { grid-template-columns: 1fr; }
-}
+  .section-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--gray-200);
+  }
+
+  .results-table { width: 100%; border-collapse: collapse; margin-bottom: 28px; }
+  .results-table th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    text-align: left;
+    padding: 7px 8px;
+    border-bottom: 1px solid var(--gray-200);
+  }
+  .results-table td {
+    padding: 9px 8px;
+    font-size: 13px;
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .result-W { color: #1a6b2b; font-weight: 600; font-family: 'IBM Plex Mono', monospace; font-size: 11px; }
+  .result-L { color: var(--accent); font-weight: 600; font-family: 'IBM Plex Mono', monospace; font-size: 11px; }
+
+  /* PHOTO UPLOAD */
+  .upload-section {
+    border: 1.5px dashed var(--gray-200);
+    padding: 16px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .upload-section p { font-size: 12px; color: var(--gray-400); margin-bottom: 10px; }
+  .upload-btn {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    background: var(--black);
+    color: white;
+    border: none;
+    padding: 9px 16px;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+  #photo-upload-input { display: none; }
+
+  /* DRAWS PAGE */
+  .draw-filter-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .draw-container { overflow-x: auto; }
+  .draw-round {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 8px;
+    vertical-align: top;
+    min-width: 160px;
+    margin-right: 4px;
+  }
+  .round-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    text-align: center;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--gray-200);
+    margin-bottom: 4px;
+  }
+  .draw-match {
+    border: 1.5px solid var(--gray-200);
+    background: white;
+  }
+  .draw-player {
+    padding: 7px 10px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+  }
+  .draw-player:first-of-type { border-bottom: 1px solid var(--gray-100); }
+  .draw-player.winner { font-weight: 600; background: var(--gray-100); }
+  .draw-score {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--gray-400);
+  }
+  .draws-wrapper { display: flex; gap: 0; }
+
+  /* TOURNAMENTS PAGE */
+  .tournament-card {
+    border: 1.5px solid var(--gray-200);
+    padding: 16px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: border-color 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .tournament-card:hover { border-color: var(--black); }
+  .tourney-name { font-weight: 600; font-size: 15px; }
+  .tourney-meta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--gray-400);
+    margin-top: 3px;
+  }
+  .tourney-surface {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    padding: 3px 8px;
+    border: 1px solid;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    flex-shrink: 0;
+  }
+  .surface-Hard { border-color: #2563eb; color: #2563eb; }
+  .surface-Clay { border-color: #b45309; color: #b45309; }
+  .surface-Grass { border-color: #16a34a; color: #16a34a; }
+  .surface-Carpet { border-color: var(--gray-400); color: var(--gray-400); }
+
+  /* SPINNER */
+  .spinner {
+    display: inline-block;
+    width: 18px; height: 18px;
+    border: 2px solid var(--gray-200);
+    border-top-color: var(--black);
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* YEAR SELECTOR */
+  .year-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+  .year-pill {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    padding: 4px 10px;
+    border: 1.5px solid var(--gray-200);
+    background: white;
+    cursor: pointer;
+    letter-spacing: 0.03em;
+  }
+  .year-pill.active { background: var(--black); color: white; border-color: var(--black); }
+  .year-pill:hover:not(.active) { border-color: var(--black); }
 </style>
 </head>
 <body>
-<nav><a href="index.html" class="nav-brand">🎾 Circuit Hub</a><a href="wta_rankings.html">WTA Rankings</a><a href="junior_rankings.html">Junior Rankings</a><a href="wta_entries.html">WTA Entries</a><a href="itf_entries.html">ITF Entries</a><a href="jr_entries.html">Junior Entries</a></nav>
-<div class="container">
-<p class="updated">Last updated: 2026-06-07</p>
 
-<h1>Circuit Hub</h1>
-<h2>Women's tennis data — rankings, entries & draws</h2>
-<div class="t-grid">
-  <div class="t-card">
-    <h3>WTA Rankings</h3>
-    <div class="meta"><span>0 players</span></div>
-    <a href="wta_rankings.html" class="btn btn-primary">View →</a>
+<header>
+  <a class="logo" href="#" onclick="showPage('ranking')">
+    WTA<span class="logo-dot">.</span>
+  </a>
+  <nav>
+    <button class="active" onclick="showPage('ranking')" id="nav-ranking">Ranking</button>
+    <button onclick="showPage('tournaments')" id="nav-tournaments">Torneos</button>
+    <button onclick="showPage('draws')" id="nav-draws">Draws</button>
+  </nav>
+</header>
+
+<!-- RANKING PAGE -->
+<div class="page active" id="page-ranking">
+  <p class="page-title">Ranking WTA</p>
+  <p class="page-subtitle" id="ranking-date-label">Cargando datos...</p>
+
+  <div class="filters-row">
+    <input type="text" class="search-box" placeholder="Buscar jugadora..." id="search-input" oninput="filterRanking()">
+    <select id="filter-country" onchange="filterRanking()">
+      <option value="">Todos los paises</option>
+    </select>
+    <select id="filter-birthyear" onchange="filterRanking()">
+      <option value="">Año de nacimiento</option>
+    </select>
+    <select id="filter-rankYear" onchange="loadRankingForYear(this.value)">
+      <option value="2024">2024</option>
+      <option value="2023">2023</option>
+      <option value="2022">2022</option>
+      <option value="2021">2021</option>
+      <option value="2020">2020</option>
+      <option value="2019">2019</option>
+      <option value="2018">2018</option>
+    </select>
   </div>
-  <div class="t-card">
-    <h3>Junior Rankings</h3>
-    <div class="meta"><span>0 players · Filter by country & year</span></div>
-    <a href="junior_rankings.html" class="btn btn-primary">View →</a>
-  </div>
-  <div class="t-card">
-    <h3>WTA Entry Lists</h3>
-    <div class="meta"><span>98 tournaments</span></div>
-    <a href="wta_entries.html" class="btn btn-primary">View →</a>
-  </div>
-  <div class="t-card">
-    <h3>Junior Entry Lists</h3>
-    <div class="meta"><span>0 tournaments</span></div>
-    <a href="jr_entries.html" class="btn btn-primary">View →</a>
-  </div>
+
+  <div id="ranking-error" class="error-msg" style="display:none"></div>
+  <div id="ranking-loading" class="loading-msg"><span class="spinner"></span>Cargando ranking...</div>
+
+  <table class="ranking-table" id="ranking-table" style="display:none">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Jugadora</th>
+        <th>Pais</th>
+        <th style="text-align:right">Puntos</th>
+      </tr>
+    </thead>
+    <tbody id="ranking-body"></tbody>
+  </table>
 </div>
+
+<!-- PLAYER PROFILE PAGE -->
+<div class="page" id="page-profile">
+  <button class="back-btn" onclick="goBack()">&#8592; Volver al ranking</button>
+  <div id="profile-content"></div>
 </div>
+
+<!-- TOURNAMENTS PAGE -->
+<div class="page" id="page-tournaments">
+  <p class="page-title">Torneos</p>
+  <p class="page-subtitle" id="tourney-subtitle">Selecciona un año</p>
+
+  <div class="year-pills" id="tourney-year-pills"></div>
+  <div id="tournaments-loading" class="loading-msg" style="display:none"><span class="spinner"></span>Cargando torneos...</div>
+  <div id="tournaments-list"></div>
+</div>
+
+<!-- DRAWS PAGE -->
+<div class="page" id="page-draws">
+  <p class="page-title">Draws</p>
+  <p class="page-subtitle">Cuadros de torneos</p>
+
+  <div class="draw-filter-row">
+    <select id="draw-year-select" onchange="loadDrawsForYear(this.value)">
+      <option value="">Selecciona año</option>
+    </select>
+    <select id="draw-tourney-select" onchange="loadDraw(this.value)">
+      <option value="">Selecciona torneo</option>
+    </select>
+  </div>
+  <div id="draws-loading" class="loading-msg" style="display:none"><span class="spinner"></span>Cargando draw...</div>
+  <div id="draw-content"></div>
+</div>
+
 <script>
-function applyFilters(tableId, countrySelId, yearSelId) {
-    const table = document.getElementById(tableId);
-    if (!table) return;
-    const country = document.getElementById(countrySelId)?.value || '';
-    const year = document.getElementById(yearSelId)?.value || '';
-    let vis = 0;
-    table.querySelectorAll('tbody tr').forEach(tr => {
-        const c = tr.dataset.country || '';
-        const y = tr.dataset.year || '';
-        const show = (!country || c === country) && (!year || y === year);
-        tr.classList.toggle('hidden', !show);
-        if (show) vis++;
-    });
-    const cnt = document.getElementById(tableId + '_count');
-    if (cnt) cnt.textContent = vis + ' players';
+// ======= CONFIG =======
+const GITHUB_RAW = 'https://raw.githubusercontent.com/JeffSackmann/tennis_wta/master/';
+const FLAGS_API = 'https://flagcdn.com/';
+
+// ======= STATE =======
+let allPlayers = {};
+let currentRanking = [];
+let filteredRanking = [];
+let storedPhotos = {};
+let allMatches = {};
+let currentYear = '2024';
+let previousPage = 'ranking';
+
+// ======= HELPERS =======
+function countryToISO2(code) {
+  const map = {
+    'USA':'us','ESP':'es','RUS':'ru','GER':'de','FRA':'fr','ITA':'it','BEL':'be',
+    'AUS':'au','CZE':'cz','POL':'pl','ROU':'ro','CHN':'cn','JPN':'jp','SRB':'rs',
+    'SUI':'ch','UKR':'ua','GBR':'gb','CAN':'ca','ARG':'ar','BRA':'br','NED':'nl',
+    'SVK':'sk','BLR':'by','CRO':'hr','AUT':'at','HUN':'hu','DEN':'dk','SWE':'se',
+    'NOR':'no','FIN':'fi','POR':'pt','GRE':'gr','TUR':'tr','ISR':'il','KAZ':'kz',
+    'UZB':'uz','THA':'th','KOR':'kr','TPE':'tw','IND':'in','RSA':'za','MOR':'ma',
+    'MEX':'mx','COL':'co','CHI':'cl','VEN':'ve','URU':'uy','PER':'pe','PAR':'py',
+    'BUL':'bg','SLO':'si','LAT':'lv','EST':'ee','LTU':'lt','MDA':'md','GEO':'ge',
+    'AZE':'az','ARM':'am','BIH':'ba','MKD':'mk','ALB':'al','MNE':'me','SCG':'rs',
+    'NZL':'nz','ZIM':'zw','NGR':'ng','KEN':'ke','EGY':'eg','TUN':'tn','ALG':'dz',
+    'MAR':'ma','BAH':'bs','TTO':'tt','JAM':'jm','PUR':'pr','DOM':'do','GUA':'gt',
+    'HAI':'ht','CRC':'cr','SLV':'sv','PAN':'pa','BOL':'bo','ECU':'ec','GUY':'gy',
+    'SRI':'lk','BAN':'bd','PAK':'pk','NEP':'np','MAS':'my','INA':'id','PHI':'ph',
+    'HKG':'hk','SGP':'sg','VIE':'vn','FIJ':'fj','SAM':'ws','TON':'to',
+    'QAT':'qa','UAE':'ae','KUW':'kw','BRN':'bh','OMA':'om','JOR':'jo',
+    'LIB':'lb','SYR':'sy','IRQ':'iq','IRN':'ir','AFG':'af','UZB':'uz',
+    'GEO':'ge','AZE':'az','TKM':'tm','KGZ':'kg','TAJ':'tj','MON':'mc',
+    'LUX':'lu','IRL':'ie','ISL':'is','MLT':'mt','CYP':'cy','MKD':'mk',
+  };
+  return map[code] || null;
 }
+
+function flagURL(code) {
+  const iso = countryToISO2(code);
+  if (!iso) return null;
+  return `${FLAGS_API}20x15/${iso}.png`;
+}
+
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g,''));
+  return lines.slice(1).map(line => {
+    const vals = line.split(',');
+    const obj = {};
+    headers.forEach((h, i) => {
+      obj[h] = (vals[i] || '').trim().replace(/^"|"$/g,'');
+    });
+    return obj;
+  });
+}
+
+async function fetchCSV(url) {
+  const resp = await fetch(url);
+  if (!resp.ok) throw new Error(`HTTP ${resp.status}: ${url}`);
+  return parseCSV(await resp.text());
+}
+
+// ======= NAVIGATION =======
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  const navBtn = document.getElementById('nav-' + name);
+  if (navBtn) navBtn.classList.add('active');
+
+  if (name === 'tournaments' && document.getElementById('tourney-year-pills').children.length === 0) {
+    buildTourneyYearPills();
+  }
+  if (name === 'draws' && document.getElementById('draw-year-select').options.length <= 1) {
+    buildDrawYearSelect();
+  }
+}
+
+function goBack() {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-ranking').classList.add('active');
+  document.getElementById('nav-ranking').classList.add('active');
+}
+
+// ======= LOAD PLAYERS =======
+async function loadPlayers() {
+  const rows = await fetchCSV(GITHUB_RAW + 'wta_players.csv');
+  rows.forEach(r => {
+    if (r.player_id) allPlayers[r.player_id] = r;
+  });
+}
+
+// ======= RANKING =======
+async function loadRankingForYear(year) {
+  currentYear = year || '2024';
+  const loadEl = document.getElementById('ranking-loading');
+  const tableEl = document.getElementById('ranking-table');
+  const errEl = document.getElementById('ranking-error');
+  loadEl.style.display = 'block';
+  tableEl.style.display = 'none';
+  errEl.style.display = 'none';
+
+  try {
+    if (Object.keys(allPlayers).length === 0) await loadPlayers();
+
+    // Use the latest ranking file for that year
+    const rankURL = GITHUB_RAW + `wta_rankings_${currentYear}s.csv`;
+    let rows;
+    try {
+      rows = await fetchCSV(rankURL);
+    } catch(e) {
+      // Try direct year file
+      rows = await fetchCSV(GITHUB_RAW + `wta_rankings_${currentYear}.csv`);
+    }
+
+    // Get latest date in file
+    const dates = [...new Set(rows.map(r => r.ranking_date))].sort();
+    const latestDate = dates[dates.length - 1];
+    const top = rows.filter(r => r.ranking_date === latestDate).sort((a,b) => +a.ranking - +b.ranking).slice(0, 200);
+
+    currentRanking = top.map(r => {
+      const p = allPlayers[r.player_id] || {};
+      return {
+        rank: +r.ranking,
+        points: +r.ranking_points || 0,
+        player_id: r.player_id,
+        name: p.first_name && p.last_name ? `${p.first_name} ${p.last_name}` : r.player_id,
+        country: p.country_code || '',
+        birth_date: p.birth_date || '',
+        hand: p.hand || ''
+      };
+    });
+
+    document.getElementById('ranking-date-label').textContent =
+      `Semana del ${latestDate.slice(0,4)}-${latestDate.slice(4,6)}-${latestDate.slice(6,8)} — Top 200`;
+
+    populateFilters();
+    filteredRanking = [...currentRanking];
+    renderRanking();
+
+    loadEl.style.display = 'none';
+    tableEl.style.display = 'table';
+  } catch(e) {
+    loadEl.style.display = 'none';
+    errEl.style.display = 'block';
+    errEl.textContent = 'Error cargando ranking: ' + e.message;
+  }
+}
+
+function populateFilters() {
+  const countries = [...new Set(currentRanking.map(p => p.country).filter(Boolean))].sort();
+  const countryEl = document.getElementById('filter-country');
+  countryEl.innerHTML = '<option value="">Todos los paises</option>';
+  countries.forEach(c => {
+    countryEl.innerHTML += `<option value="${c}">${c}</option>`;
+  });
+
+  const birthYears = [...new Set(currentRanking.map(p => p.birth_date ? p.birth_date.slice(0,4) : '').filter(y => y && y > '1970'))].sort().reverse();
+  const byEl = document.getElementById('filter-birthyear');
+  byEl.innerHTML = '<option value="">Año de nacimiento</option>';
+  birthYears.forEach(y => {
+    byEl.innerHTML += `<option value="${y}">${y}</option>`;
+  });
+}
+
+function filterRanking() {
+  const q = document.getElementById('search-input').value.toLowerCase();
+  const country = document.getElementById('filter-country').value;
+  const birthYear = document.getElementById('filter-birthyear').value;
+
+  filteredRanking = currentRanking.filter(p => {
+    if (q && !p.name.toLowerCase().includes(q)) return false;
+    if (country && p.country !== country) return false;
+    if (birthYear && (!p.birth_date || !p.birth_date.startsWith(birthYear))) return false;
+    return true;
+  });
+  renderRanking();
+}
+
+function renderRanking() {
+  const tbody = document.getElementById('ranking-body');
+  if (!filteredRanking.length) {
+    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;padding:30px;font-size:13px;color:#999;">Sin resultados</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = filteredRanking.map(p => {
+    const flagSrc = flagURL(p.country);
+    const flagHtml = flagSrc
+      ? `<img class="flag-img" src="${flagSrc}" alt="${p.country}" onerror="this.style.display='none'">`
+      : '';
+    return `<tr onclick="openProfile('${p.player_id}')">
+      <td class="rank-num ${p.rank <= 3 ? 'top3' : ''}">${p.rank}</td>
+      <td class="player-name-cell">${p.name}</td>
+      <td>
+        <div class="player-country">
+          ${flagHtml}
+          ${p.country}
+        </div>
+      </td>
+      <td class="points-cell">${p.points.toLocaleString()}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ======= PLAYER PROFILE =======
+async function openProfile(playerId) {
+  previousPage = 'ranking';
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-profile').classList.add('active');
+
+  const player = allPlayers[playerId] || {};
+  const rankEntry = currentRanking.find(r => r.player_id === playerId) || {};
+  const name = player.first_name && player.last_name
+    ? `${player.first_name} ${player.last_name}`
+    : playerId;
+
+  document.getElementById('profile-content').innerHTML = `<div class="loading-msg"><span class="spinner"></span>Cargando perfil...</div>`;
+
+  // Load recent matches
+  let wins = 0, losses = 0, recentMatches = [];
+  try {
+    const matchRows = await fetchCSV(GITHUB_RAW + `wta_matches_${currentYear}.csv`);
+    const playerMatches = matchRows.filter(m =>
+      m.winner_id === playerId || m.loser_id === playerId
+    );
+    playerMatches.sort((a,b) => (b.tourney_date||'').localeCompare(a.tourney_date||''));
+    recentMatches = playerMatches.slice(0, 20);
+    wins = playerMatches.filter(m => m.winner_id === playerId).length;
+    losses = playerMatches.filter(m => m.loser_id === playerId).length;
+  } catch(e) {}
+
+  const photoKey = 'photo_' + playerId;
+  const storedPhoto = storedPhotos[photoKey] || null;
+
+  const flagSrc = flagURL(player.country_code);
+  const flagHtml = flagSrc
+    ? `<img class="flag-img" src="${flagSrc}" alt="${player.country_code}" style="width:24px;height:17px" onerror="this.style.display='none'">`
+    : '';
+
+  const hand = player.hand === 'R' ? 'Derecha' : player.hand === 'L' ? 'Zurda' : '–';
+  const bdate = player.birth_date
+    ? `${player.birth_date.slice(6,8)}/${player.birth_date.slice(4,6)}/${player.birth_date.slice(0,4)}`
+    : '–';
+  const age = player.birth_date
+    ? Math.floor((Date.now() - new Date(
+        +player.birth_date.slice(0,4),
+        +player.birth_date.slice(4,6)-1,
+        +player.birth_date.slice(6,8)
+      )) / (365.25*24*3600*1000))
+    : null;
+
+  const matchesHTML = recentMatches.length ? recentMatches.map(m => {
+    const isWin = m.winner_id === playerId;
+    const opp = isWin
+      ? (allPlayers[m.loser_id] ? `${allPlayers[m.loser_id].first_name} ${allPlayers[m.loser_id].last_name}` : m.loser_name || m.loser_id)
+      : (allPlayers[m.winner_id] ? `${allPlayers[m.winner_id].first_name} ${allPlayers[m.winner_id].last_name}` : m.winner_name || m.winner_id);
+    const date = m.tourney_date ? `${m.tourney_date.slice(0,4)}-${m.tourney_date.slice(4,6)}-${m.tourney_date.slice(6,8)}` : '';
+    const score = isWin ? m.score : reverseScore(m.score);
+    return `<tr>
+      <td>${date}</td>
+      <td>${m.tourney_name || '–'}</td>
+      <td>${m.round || '–'}</td>
+      <td class="${isWin ? 'result-W' : 'result-L'}">${isWin ? 'G' : 'P'}</td>
+      <td>${opp}</td>
+      <td style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#666">${score || '–'}</td>
+    </tr>`;
+  }).join('') : `<tr><td colspan="6" style="text-align:center;padding:20px;font-size:13px;color:#999;">Sin partidos registrados para ${currentYear}</td></tr>`;
+
+  document.getElementById('profile-content').innerHTML = `
+    <div class="profile-header">
+      <div id="photo-display">
+        ${storedPhoto
+          ? `<div class="profile-photo-wrap"><img src="${storedPhoto}" alt="${name}"></div>`
+          : `<div class="profile-photo-placeholder">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5">
+                <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+              </svg>
+            </div>`
+        }
+      </div>
+      <div class="profile-info">
+        <h2>${name}</h2>
+        <div class="player-country" style="margin-top:4px">
+          ${flagHtml}
+          <span style="font-size:13px;color:#555">${player.country_code || '–'}</span>
+        </div>
+        <div class="profile-meta">
+          <div class="meta-chip">Ranking <span>#${rankEntry.rank || '–'}</span></div>
+          <div class="meta-chip">Puntos <span>${(rankEntry.points||0).toLocaleString()}</span></div>
+          <div class="meta-chip">Mano <span>${hand}</span></div>
+          <div class="meta-chip">Nacimiento <span>${bdate}${age ? ` (${age} años)` : ''}</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-stats-grid">
+      <div class="stat-box">
+        <div class="stat-num">${wins + losses}</div>
+        <div class="stat-label">Partidos ${currentYear}</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num" style="color:#1a6b2b">${wins}</div>
+        <div class="stat-label">Victorias</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num" style="color:#c8102e">${losses}</div>
+        <div class="stat-label">Derrotas</div>
+      </div>
+    </div>
+
+    <div class="upload-section">
+      <p>Agrega una foto de la jugadora</p>
+      <button class="upload-btn" onclick="document.getElementById('photo-upload-input').click()">Subir foto</button>
+      <input type="file" id="photo-upload-input" accept="image/*" onchange="handlePhotoUpload('${playerId}')">
+    </div>
+
+    <div class="section-title">Resultados ${currentYear}</div>
+    <div style="overflow-x:auto">
+      <table class="results-table">
+        <thead>
+          <tr>
+            <th>Fecha</th><th>Torneo</th><th>Ronda</th><th>R</th><th>Rival</th><th>Score</th>
+          </tr>
+        </thead>
+        <tbody>${matchesHTML}</tbody>
+      </table>
+    </div>
+  `;
+}
+
+function reverseScore(score) {
+  if (!score) return '';
+  return score.split(' ').map(set => {
+    const parts = set.split('-');
+    if (parts.length === 2) return `${parts[1]}-${parts[0]}`;
+    return set;
+  }).join(' ');
+}
+
+function handlePhotoUpload(playerId) {
+  const input = document.getElementById('photo-upload-input');
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    storedPhotos['photo_' + playerId] = e.target.result;
+    // Refresh photo display
+    const photoDisplay = document.getElementById('photo-display');
+    if (photoDisplay) {
+      photoDisplay.innerHTML = `<div class="profile-photo-wrap"><img src="${e.target.result}" alt="foto"></div>`;
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
+// ======= TOURNAMENTS =======
+function buildTourneyYearPills() {
+  const years = ['2024','2023','2022','2021','2020','2019','2018','2017','2016','2015'];
+  const pills = document.getElementById('tourney-year-pills');
+  pills.innerHTML = years.map(y =>
+    `<button class="year-pill ${y === '2024' ? 'active' : ''}" onclick="loadTournaments('${y}', this)">${y}</button>`
+  ).join('');
+  loadTournaments('2024', pills.children[0]);
+}
+
+async function loadTournaments(year, btn) {
+  document.querySelectorAll('.year-pill').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tourney-subtitle').textContent = `Temporada ${year}`;
+
+  const loadEl = document.getElementById('tournaments-loading');
+  const listEl = document.getElementById('tournaments-list');
+  loadEl.style.display = 'block';
+  listEl.innerHTML = '';
+
+  try {
+    const rows = await fetchCSV(GITHUB_RAW + `wta_matches_${year}.csv`);
+    const seenTourneys = {};
+    const tournaments = [];
+    rows.forEach(r => {
+      if (!seenTourneys[r.tourney_id]) {
+        seenTourneys[r.tourney_id] = true;
+        tournaments.push({
+          id: r.tourney_id,
+          name: r.tourney_name,
+          surface: r.surface,
+          date: r.tourney_date,
+          draw_size: r.draw_size
+        });
+      }
+    });
+    tournaments.sort((a,b) => (a.date||'').localeCompare(b.date||''));
+
+    listEl.innerHTML = tournaments.map(t => {
+      const d = t.date ? `${t.date.slice(0,4)}-${t.date.slice(4,6)}-${t.date.slice(6,8)}` : '';
+      return `<div class="tournament-card" onclick="openDrawFromTourney('${t.id}', '${year}')">
+        <div>
+          <div class="tourney-name">${t.name || t.id}</div>
+          <div class="tourney-meta">${d}  •  Draw: ${t.draw_size}</div>
+        </div>
+        <div class="tourney-surface surface-${t.surface || 'Hard'}">${t.surface || '?'}</div>
+      </div>`;
+    }).join('');
+  } catch(e) {
+    listEl.innerHTML = `<div class="error-msg">Error cargando torneos: ${e.message}</div>`;
+  }
+  loadEl.style.display = 'none';
+}
+
+// ======= DRAWS =======
+function buildDrawYearSelect() {
+  const sel = document.getElementById('draw-year-select');
+  ['2024','2023','2022','2021','2020','2019','2018'].forEach(y => {
+    sel.innerHTML += `<option value="${y}">${y}</option>`;
+  });
+}
+
+async function loadDrawsForYear(year) {
+  if (!year) return;
+  const sel = document.getElementById('draw-tourney-select');
+  sel.innerHTML = '<option value="">Selecciona torneo</option>';
+  document.getElementById('draw-content').innerHTML = '';
+  if (!year) return;
+
+  try {
+    const rows = await fetchCSV(GITHUB_RAW + `wta_matches_${year}.csv`);
+    const seenTourneys = {};
+    rows.forEach(r => {
+      if (!seenTourneys[r.tourney_id]) {
+        seenTourneys[r.tourney_id] = true;
+        sel.innerHTML += `<option value="${r.tourney_id}|${year}">${r.tourney_name} (${(r.tourney_date||'').slice(0,4)}-${(r.tourney_date||'').slice(4,6)})</option>`;
+      }
+    });
+    // Cache
+    if (!allMatches[year]) {
+      allMatches[year] = rows;
+    }
+  } catch(e) {}
+}
+
+function openDrawFromTourney(tourneyId, year) {
+  showPage('draws');
+  const yearSel = document.getElementById('draw-year-select');
+  yearSel.value = year;
+  loadDrawsForYear(year).then(() => {
+    const tourneySel = document.getElementById('draw-tourney-select');
+    for (let opt of tourneySel.options) {
+      if (opt.value.startsWith(tourneyId + '|')) {
+        tourneySel.value = opt.value;
+        break;
+      }
+    }
+    loadDraw(tourneyId + '|' + year);
+  });
+}
+
+async function loadDraw(val) {
+  if (!val) return;
+  const [tourneyId, year] = val.split('|');
+  const loadEl = document.getElementById('draws-loading');
+  const contentEl = document.getElementById('draw-content');
+  loadEl.style.display = 'block';
+  contentEl.innerHTML = '';
+
+  try {
+    if (!allMatches[year]) {
+      allMatches[year] = await fetchCSV(GITHUB_RAW + `wta_matches_${year}.csv`);
+    }
+    const matches = allMatches[year].filter(m => m.tourney_id === tourneyId);
+    if (!matches.length) { contentEl.innerHTML = `<div class="loading-msg">Sin datos para este torneo</div>`; loadEl.style.display='none'; return; }
+
+    // Group by round
+    const roundOrder = ['R128','R64','R32','R16','QF','SF','F'];
+    const rounds = {};
+    matches.forEach(m => {
+      const r = m.round || '?';
+      if (!rounds[r]) rounds[r] = [];
+      rounds[r].push(m);
+    });
+
+    const sortedRounds = Object.keys(rounds).sort((a,b) => {
+      const ai = roundOrder.indexOf(a), bi = roundOrder.indexOf(b);
+      return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+    });
+
+    const getName = (id, fallback) => {
+      if (allPlayers[id]) return `${allPlayers[id].first_name} ${allPlayers[id].last_name}`;
+      return fallback || id;
+    };
+
+    let html = `<div class="draws-wrapper">`;
+    sortedRounds.forEach(round => {
+      html += `<div class="draw-round">
+        <div class="round-label">${round}</div>`;
+      rounds[round].forEach(m => {
+        const wname = getName(m.winner_id, m.winner_name);
+        const lname = getName(m.loser_id, m.loser_name);
+        html += `<div class="draw-match">
+          <div class="draw-player winner">
+            <span>${wname}</span>
+            <span class="draw-score">${m.score ? m.score.split(' ')[0] : ''}</span>
+          </div>
+          <div class="draw-player">
+            <span>${lname}</span>
+          </div>
+        </div>`;
+      });
+      html += `</div>`;
+    });
+    html += `</div>`;
+    contentEl.innerHTML = html;
+  } catch(e) {
+    contentEl.innerHTML = `<div class="error-msg">Error: ${e.message}</div>`;
+  }
+  loadEl.style.display = 'none';
+}
+
+// ======= INIT =======
+loadRankingForYear('2024');
 </script>
 </body>
 </html>
