@@ -3,145 +3,848 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Home · Circuit Hub</title>
+<title>Circuit Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-    --bg: #0f0f13;
-    --surface: #1a1a24;
-    --surface2: #22222f;
-    --accent: #7c6af7;
-    --accent2: #a78bfa;
-    --text: #e8e8f0;
-    --muted: #888899;
-    --border: #2e2e42;
-    --green: #34d399;
-    --yellow: #fbbf24;
-    --red: #f87171;
+  --bg: #ffffff;
+  --surface: #f7f7f5;
+  --surface2: #efefec;
+  --border: #e2e2dd;
+  --border2: #d0d0ca;
+  --text: #111110;
+  --text2: #555550;
+  --text3: #999990;
+  --accent: #1a1a18;
+  --accent-hover: #333330;
+  --green: #1a6b3c;
+  --green-bg: #edf7f1;
+  --blue: #1a3f6b;
+  --blue-bg: #edf2f7;
+  --amber: #7a4f00;
+  --amber-bg: #fdf6e3;
+  --red: #6b1a1a;
+  --red-bg: #fdf0f0;
+  --radius: 8px;
+  --radius-lg: 12px;
+  --shadow: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,.08), 0 2px 4px rgba(0,0,0,.04);
+  --shadow-lg: 0 8px 30px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
 }
+
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 14px; }
-a { color: var(--accent2); text-decoration: none; }
-a:hover { text-decoration: underline; }
 
-/* NAV */
-nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 16px; display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
-nav a { display: inline-block; padding: 14px 12px; color: var(--muted); font-size: 13px; font-weight: 500; transition: color .2s; }
-nav a:hover, nav a.active { color: var(--accent2); text-decoration: none; border-bottom: 2px solid var(--accent); }
-.nav-brand { font-weight: 700; color: var(--text) !important; font-size: 15px; margin-right: 8px; border-bottom: none !important; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
 
-/* LAYOUT */
-.container { max-width: 1100px; margin: 0 auto; padding: 24px 16px; }
-h1 { font-size: 20px; margin-bottom: 4px; }
-h2 { font-size: 16px; color: var(--muted); font-weight: 400; margin-bottom: 20px; }
-.updated { font-size: 12px; color: var(--muted); margin-bottom: 20px; }
+/* ── TOPBAR ── */
+.topbar {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(255,255,255,.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 20px;
+  display: flex; align-items: center; gap: 2px;
+  height: 52px;
+}
+.brand {
+  font-size: 15px; font-weight: 600;
+  color: var(--text); margin-right: 16px;
+  letter-spacing: -.3px; white-space: nowrap;
+}
+.nav-btn {
+  background: none; border: none; cursor: pointer;
+  padding: 6px 12px; border-radius: 6px;
+  font-size: 13px; font-weight: 500; font-family: inherit;
+  color: var(--text2); transition: all .15s; white-space: nowrap;
+}
+.nav-btn:hover { background: var(--surface2); color: var(--text); }
+.nav-btn.active { background: var(--accent); color: #fff; }
+.nav-spacer { flex: 1; }
+.updated-tag {
+  font-size: 11px; color: var(--text3);
+  font-family: 'DM Mono', monospace;
+  white-space: nowrap;
+}
 
-/* FILTERS */
-.filters { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; align-items: center; }
-.filters select, .filters input { background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 7px 10px; border-radius: 6px; font-size: 13px; outline: none; }
-.filters select:focus, .filters input:focus { border-color: var(--accent); }
-.filters label { font-size: 12px; color: var(--muted); }
+/* ── PAGES ── */
+.page { display: none; }
+.page.active { display: block; }
+
+/* ── CONTAINER ── */
+.container { max-width: 1080px; margin: 0 auto; padding: 28px 20px; }
+
+/* ── PAGE HEADER ── */
+.page-header { margin-bottom: 24px; }
+.page-header h1 { font-size: 22px; font-weight: 600; letter-spacing: -.4px; }
+.page-header p { color: var(--text3); font-size: 13px; margin-top: 4px; }
+
+/* ── FILTERS BAR ── */
+.filters {
+  display: flex; flex-wrap: wrap; gap: 10px;
+  align-items: flex-end; margin-bottom: 18px;
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
 .filter-group { display: flex; flex-direction: column; gap: 4px; }
-.badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; }
-.badge-main { background: #1e3a5f; color: #60b4ff; }
-.badge-qual { background: #2d3b1e; color: #86efac; }
-.badge-alt { background: #3b2d1e; color: #fbbf24; }
-.count-badge { background: var(--surface2); border: 1px solid var(--border); color: var(--muted); padding: 2px 8px; border-radius: 12px; font-size: 11px; }
+.filter-group label { font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: .06em; }
+.filter-group select, .filter-group input {
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  padding: 7px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  min-width: 140px;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  padding-right: 28px;
+  cursor: pointer;
+}
+.filter-group select:focus { border-color: var(--accent); }
+.result-count {
+  font-size: 12px; color: var(--text3);
+  font-family: 'DM Mono', monospace;
+  padding: 7px 10px;
+  background: var(--surface2);
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  align-self: flex-end;
+}
 
-/* TABLE */
-.table-wrap { overflow-x: auto; border-radius: 8px; border: 1px solid var(--border); }
+/* ── TABLE ── */
+.table-wrap {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
 table { width: 100%; border-collapse: collapse; }
-thead th { background: var(--surface2); padding: 10px 12px; text-align: left; font-size: 12px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .05em; border-bottom: 1px solid var(--border); white-space: nowrap; }
-tbody tr { border-bottom: 1px solid var(--border); transition: background .15s; }
+thead th {
+  background: var(--surface);
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 11px; font-weight: 600;
+  color: var(--text3);
+  text-transform: uppercase; letter-spacing: .07em;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background .1s;
+}
 tbody tr:last-child { border-bottom: none; }
-tbody tr:hover { background: var(--surface2); }
-tbody td { padding: 9px 12px; }
-.rank-num { color: var(--accent2); font-weight: 600; font-variant-numeric: tabular-nums; }
-.flag { vertical-align: middle; border-radius: 2px; }
-.no-flag { font-size: 11px; color: var(--muted); }
+tbody tr:hover { background: var(--surface); }
+tbody td { padding: 10px 14px; vertical-align: middle; }
+.rank-cell {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px; font-weight: 500;
+  color: var(--text3); width: 52px;
+}
+.rank-top { color: var(--text); font-weight: 600; }
+.name-cell { font-weight: 500; font-size: 14px; }
+.country-cell { display: flex; align-items: center; gap: 7px; }
+.flag-img { width: 20px; height: 14px; border-radius: 2px; object-fit: cover; vertical-align: middle; }
+.country-code { font-size: 12px; color: var(--text2); font-family: 'DM Mono', monospace; }
+.points-cell { font-family: 'DM Mono', monospace; font-size: 13px; }
+.born-cell { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--text3); }
 .hidden { display: none !important; }
 
-/* TOURNAMENT CARDS */
-.t-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; margin-top: 8px; }
-.t-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
-.t-card h3 { font-size: 15px; margin-bottom: 6px; }
-.t-card .meta { font-size: 12px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
-.t-card .meta span { display: flex; align-items: center; gap: 4px; }
-.btn { display: inline-block; padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; border: none; }
+/* ── BADGES ── */
+.badge {
+  display: inline-block; padding: 2px 8px;
+  border-radius: 20px; font-size: 11px; font-weight: 600;
+  letter-spacing: .02em;
+}
+.badge-md { background: var(--blue-bg); color: var(--blue); }
+.badge-q  { background: var(--green-bg); color: var(--green); }
+.badge-alt { background: var(--amber-bg); color: var(--amber); }
+.badge-level { background: var(--surface2); color: var(--text2); border: 1px solid var(--border2); }
+
+/* ── TOURNAMENT CARDS ── */
+.week-section { margin-bottom: 32px; }
+.week-label {
+  font-size: 11px; font-weight: 600; color: var(--text3);
+  text-transform: uppercase; letter-spacing: .1em;
+  margin-bottom: 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+.week-label::after {
+  content: ''; flex: 1;
+  height: 1px; background: var(--border);
+}
+.t-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+.t-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  box-shadow: var(--shadow);
+  transition: box-shadow .15s, border-color .15s;
+}
+.t-card:hover { box-shadow: var(--shadow-md); border-color: var(--border2); }
+.t-card-name { font-size: 14px; font-weight: 600; margin-bottom: 8px; letter-spacing: -.2px; }
+.t-card-meta {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  margin-bottom: 12px;
+}
+.meta-chip {
+  display: flex; align-items: center; gap: 4px;
+  font-size: 11px; color: var(--text2);
+  background: var(--surface);
+  padding: 3px 8px; border-radius: 20px;
+  border: 1px solid var(--border);
+}
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 14px; border-radius: 6px;
+  font-size: 12px; font-weight: 600; font-family: inherit;
+  cursor: pointer; border: none; transition: all .15s;
+  text-decoration: none;
+}
 .btn-primary { background: var(--accent); color: #fff; }
-.btn-primary:hover { background: var(--accent2); }
+.btn-primary:hover { background: var(--accent-hover); }
+.btn-outline {
+  background: var(--bg); color: var(--text);
+  border: 1px solid var(--border2);
+}
+.btn-outline:hover { background: var(--surface2); }
 
-/* WEEK TABS */
-.week-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
-.week-tab { padding: 7px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); font-size: 13px; cursor: pointer; transition: all .2s; }
-.week-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+/* ── LOADING ── */
+.loading {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 60px 20px; gap: 16px;
+}
+.spinner {
+  width: 32px; height: 32px;
+  border: 2px solid var(--border2);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading p { color: var(--text3); font-size: 13px; }
 
-/* ENTRY MODAL */
-.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.7); z-index: 100; justify-content: center; align-items: flex-start; padding-top: 40px; }
+/* ── ERROR ── */
+.error-box {
+  background: var(--red-bg); border: 1px solid #f5c5c5;
+  border-radius: var(--radius); padding: 14px 16px;
+  color: var(--red); font-size: 13px; margin: 12px 0;
+}
+
+/* ── EMPTY ── */
+.empty-state {
+  text-align: center; padding: 48px 20px;
+  color: var(--text3);
+}
+.empty-state strong { display: block; font-size: 15px; color: var(--text2); margin-bottom: 6px; }
+
+/* ── MODAL ── */
+.modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,.35);
+  z-index: 200; align-items: flex-start;
+  justify-content: center; padding: 40px 16px;
+}
 .modal-overlay.open { display: flex; }
-.modal { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; width: 95%; max-width: 700px; max-height: 80vh; display: flex; flex-direction: column; }
-.modal-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-.modal-body { overflow-y: auto; padding: 16px 20px; flex: 1; }
-.modal-close { background: none; border: none; color: var(--muted); font-size: 20px; cursor: pointer; line-height: 1; }
+.modal {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  width: 100%; max-width: 680px;
+  max-height: 82vh;
+  display: flex; flex-direction: column;
+  animation: slideUp .2s ease;
+}
+@keyframes slideUp { from { transform: translateY(16px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.modal-head {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
+}
+.modal-head h2 { font-size: 15px; font-weight: 600; letter-spacing: -.2px; }
+.modal-close {
+  background: var(--surface2); border: none; cursor: pointer;
+  width: 28px; height: 28px; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text2); font-size: 16px; line-height: 1;
+  transition: background .15s; flex-shrink: 0;
+}
+.modal-close:hover { background: var(--border2); }
+.modal-body { overflow-y: auto; flex: 1; padding: 16px 20px; }
 
-/* SECTION TABS */
-.section-tabs { display: flex; gap: 4px; margin-bottom: 14px; }
-.section-tab { padding: 5px 12px; border-radius: 5px; font-size: 12px; cursor: pointer; border: 1px solid var(--border); background: var(--surface2); color: var(--muted); }
-.section-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+/* section tabs inside modal */
+.seg-tabs {
+  display: flex; gap: 4px; margin-bottom: 16px;
+  background: var(--surface); border-radius: 8px;
+  padding: 3px;
+}
+.seg-tab {
+  flex: 1; padding: 6px 10px; border-radius: 6px;
+  border: none; background: none; font-family: inherit;
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  color: var(--text2); transition: all .15s;
+}
+.seg-tab.active { background: var(--bg); color: var(--text); box-shadow: var(--shadow); }
 
+/* modal filters */
+.modal-filters {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin-bottom: 14px;
+}
+.modal-filters select {
+  background: var(--bg); border: 1px solid var(--border2);
+  color: var(--text); padding: 6px 26px 6px 10px;
+  border-radius: 6px; font-size: 12px; font-family: inherit;
+  outline: none; appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 7px center;
+  cursor: pointer;
+}
+
+/* ── DRAW BRACKET ── */
+.draw-wrap { overflow-x: auto; padding-bottom: 8px; }
+.bracket {
+  display: flex; gap: 0; min-width: max-content;
+}
+.round-col { display: flex; flex-direction: column; justify-content: space-around; }
+.round-head {
+  font-size: 10px; font-weight: 700; color: var(--text3);
+  text-transform: uppercase; letter-spacing: .1em;
+  padding: 6px 12px; text-align: center;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+.match-pair {
+  display: flex; flex-direction: column;
+  margin: 4px 8px; position: relative;
+}
+.match-player {
+  padding: 6px 10px; font-size: 12px;
+  border: 1px solid var(--border); background: var(--bg);
+  min-width: 160px; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis;
+  display: flex; align-items: center; gap: 6px;
+}
+.match-player:first-child { border-radius: 6px 6px 0 0; border-bottom: none; }
+.match-player:last-child { border-radius: 0 0 6px 6px; }
+.match-player.winner { font-weight: 600; background: var(--surface); }
+.match-player .score {
+  margin-left: auto; font-family: 'DM Mono', monospace;
+  font-size: 11px; color: var(--text3);
+}
+
+/* ── RESPONSIVE ── */
 @media (max-width: 600px) {
-    nav { gap: 0; }
-    nav a { padding: 12px 8px; font-size: 12px; }
-    .t-grid { grid-template-columns: 1fr; }
+  .topbar { padding: 0 12px; gap: 0; overflow-x: auto; }
+  .nav-btn { padding: 6px 9px; font-size: 12px; }
+  .container { padding: 20px 12px; }
+  .t-grid { grid-template-columns: 1fr; }
+  .filters { padding: 12px; }
+  .filter-group select, .filter-group input { min-width: 120px; }
 }
 </style>
 </head>
 <body>
-<nav><a href="index.html" class="nav-brand">🎾 Circuit Hub</a><a href="wta_rankings.html">WTA Rankings</a><a href="junior_rankings.html">Junior Rankings</a><a href="wta_entries.html">WTA Entries</a><a href="itf_entries.html">ITF Entries</a><a href="jr_entries.html">Junior Entries</a></nav>
-<div class="container">
-<p class="updated">Last updated: 2026-06-09</p>
 
-<h1>Circuit Hub</h1>
-<h2>Women's tennis data — rankings, entries & draws</h2>
-<div class="t-grid">
-  <div class="t-card">
-    <h3>WTA Rankings</h3>
-    <div class="meta"><span>0 players</span></div>
-    <a href="wta_rankings.html" class="btn btn-primary">View →</a>
-  </div>
-  <div class="t-card">
-    <h3>Junior Rankings</h3>
-    <div class="meta"><span>0 players · Filter by country & year</span></div>
-    <a href="junior_rankings.html" class="btn btn-primary">View →</a>
-  </div>
-  <div class="t-card">
-    <h3>WTA Entry Lists</h3>
-    <div class="meta"><span>98 tournaments</span></div>
-    <a href="wta_entries.html" class="btn btn-primary">View →</a>
-  </div>
-  <div class="t-card">
-    <h3>Junior Entry Lists</h3>
-    <div class="meta"><span>0 tournaments</span></div>
-    <a href="jr_entries.html" class="btn btn-primary">View →</a>
+<div class="topbar">
+  <span class="brand">Circuit Hub</span>
+  <button class="nav-btn active" onclick="showPage('rankings')">Rankings</button>
+  <button class="nav-btn" onclick="showPage('entries-itf')">ITF Entries</button>
+  <button class="nav-btn" onclick="showPage('entries-jr')">Junior Entries</button>
+  <div class="nav-spacer"></div>
+  <span class="updated-tag" id="updated-tag"></span>
+</div>
+
+<!-- RANKINGS PAGE -->
+<div class="page active" id="page-rankings">
+  <div class="container">
+    <div class="page-header">
+      <h1>Rankings</h1>
+      <p>Select a category — updated weekly from screenshots</p>
+    </div>
+
+    <!-- Category selector -->
+    <div class="seg-tabs" id="rank-tabs" style="margin-bottom:20px;flex-wrap:wrap;gap:6px;">
+      <button class="week-tab active" onclick="selectCategory(this,'u16_girls')">Girls U16</button>
+      <button class="week-tab" onclick="selectCategory(this,'u14_girls')">Girls U14</button>
+      <button class="week-tab" onclick="selectCategory(this,'u12_girls')">Girls U12</button>
+      <button class="week-tab" onclick="selectCategory(this,'itf_junior_girls')">ITF Junior Girls</button>
+      <button class="week-tab" onclick="selectCategory(this,'wta')">WTA</button>
+    </div>
+
+    <div class="filters" id="rank-filters" style="display:none">
+      <div class="filter-group">
+        <label>Country</label>
+        <select id="rank-country" onchange="filterTable()">
+          <option value="">All countries</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Birth year</label>
+        <select id="rank-year" onchange="filterTable()">
+          <option value="">All years</option>
+        </select>
+      </div>
+      <span class="result-count" id="rank-count">—</span>
+      <span id="rank-week-label" style="font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;padding:7px 0;"></span>
+    </div>
+
+    <div id="rank-body">
+      <div class="empty-state">
+        <strong>Select a category above</strong>
+        Rankings are loaded from the repo — upload via the admin panel.
+      </div>
+    </div>
   </div>
 </div>
+
+<!-- ITF WT ENTRIES -->
+<div class="page" id="page-entries-itf">
+  <div class="container">
+    <div class="page-header">
+      <h1>ITF Women's Tour — Entry Lists</h1>
+      <p>Upcoming ITF WT tournaments — next 2 weeks</p>
+    </div>
+    <div id="itf-entries-body">
+      <div class="loading"><div class="spinner"></div><p>Loading tournaments...</p></div>
+    </div>
+  </div>
 </div>
+
+<!-- JUNIOR ENTRIES -->
+<div class="page" id="page-entries-jr">
+  <div class="container">
+    <div class="page-header">
+      <h1>Junior Girls — Entry Lists</h1>
+      <p>Upcoming ITF Junior Girls tournaments — next 2 weeks</p>
+    </div>
+    <div id="jr-entries-body">
+      <div class="loading"><div class="spinner"></div><p>Loading tournaments...</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ENTRY MODAL -->
+<div class="modal-overlay" id="entry-modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="modal-title">Entry List</h2>
+      <button class="modal-close" onclick="closeModal()">&#x2715;</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
 <script>
-function applyFilters(tableId, countrySelId, yearSelId) {
-    const table = document.getElementById(tableId);
-    if (!table) return;
-    const country = document.getElementById(countrySelId)?.value || '';
-    const year = document.getElementById(yearSelId)?.value || '';
-    let vis = 0;
-    table.querySelectorAll('tbody tr').forEach(tr => {
-        const c = tr.dataset.country || '';
-        const y = tr.dataset.year || '';
-        const show = (!country || c === country) && (!year || y === year);
-        tr.classList.toggle('hidden', !show);
-        if (show) vis++;
-    });
-    const cnt = document.getElementById(tableId + '_count');
-    if (cnt) cnt.textContent = vis + ' players';
+// ── CONSTANTS ────────────────────────────────────────────
+const ISO2 = {
+  ARG:"ar",EST:"ee",USA:"us",ESP:"es",FRA:"fr",GBR:"gb",GER:"de",ITA:"it",
+  RUS:"ru",AUS:"au",BRA:"br",CAN:"ca",JPN:"jp",CHN:"cn",CZE:"cz",POL:"pl",
+  ROU:"ro",SRB:"rs",SVK:"sk",SUI:"ch",BEL:"be",NED:"nl",CRO:"hr",UKR:"ua",
+  LAT:"lv",LTU:"lt",FIN:"fi",SWE:"se",NOR:"no",DEN:"dk",POR:"pt",HUN:"hu",
+  BUL:"bg",GRE:"gr",TUR:"tr",KAZ:"kz",UZB:"uz",RSA:"za",MEX:"mx",COL:"co",
+  CHI:"cl",PER:"pe",PAR:"py",URU:"uy",VEN:"ve",ECU:"ec",BOL:"bo",IND:"in",
+  TPE:"tw",KOR:"kr",THA:"th",MAS:"my",INA:"id",PHI:"ph",NZL:"nz",ISR:"il",
+  EGY:"eg",MAR:"ma",TUN:"tn",GEO:"ge",AZE:"az",ARM:"am",BLR:"by",MDA:"md",
+  MKD:"mk",ALB:"al",BIH:"ba",MNE:"me",SLO:"si",AUT:"at",LUX:"lu",CYP:"cy",
+  SVN:"si",MLT:"mt",ISL:"is",IRL:"ie",MON:"mc",
+};
+
+// Map country NAMES (from screenshots) to ISO3
+const NAME_TO_ISO3 = {
+  "Romania":"ROU","Ukraine":"UKR","France":"FRA","Czech Republic":"CZE","Czechia":"CZE",
+  "Spain":"ESP","Italy":"ITA","Germany":"GER","Great Britain":"GBR","United Kingdom":"GBR",
+  "Slovakia":"SVK","Poland":"POL","Switzerland":"SUI","Belgium":"BEL","Netherlands":"NED",
+  "Croatia":"CRO","Hungary":"HUN","Bulgaria":"BUL","Greece":"GRE","Turkey":"TUR",
+  "Russia":"RUS","Kazakhstan":"KAZ","Georgia":"GEO","Azerbaijan":"AZE","Armenia":"ARM",
+  "Belarus":"BLR","Moldova":"MDA","North Macedonia":"MKD","Albania":"ALB",
+  "Bosnia and Herzegovina":"BIH","Montenegro":"MNE","Slovenia":"SVN","Austria":"AUT",
+  "Luxembourg":"LUX","Cyprus":"CYP","Malta":"MLT","Iceland":"ISL","Ireland":"IRL",
+  "Portugal":"POR","Sweden":"SWE","Norway":"NOR","Denmark":"DEN","Finland":"FIN",
+  "Latvia":"LAT","Lithuania":"LTU","Estonia":"EST","Serbia":"SRB","Israel":"ISR",
+  "Australia":"AUS","Canada":"CAN","USA":"USA","United States":"USA","Japan":"JPN",
+  "China":"CHN","South Korea":"KOR","Thailand":"THA","India":"IND","Brazil":"BRA",
+  "Argentina":"ARG","Mexico":"MEX","Colombia":"COL","Chile":"CHI","Peru":"PER",
+  "Uruguay":"URU","Morocco":"MAR","Egypt":"EGY","Tunisia":"TUN","South Africa":"RSA",
+  "New Zealand":"NZL","Chinese Taipei":"TPE","Indonesia":"INA","Malaysia":"MAS",
+  "Philippines":"PHI","Uzbekistan":"UZB","Cameroon":"CMR","Kenya":"KEN",
+  "Nigeria":"NIG","Zimbabwe":"ZIM","Ghana":"GHA",
+  "Kinea, Republic":"GIN","Kiribati":"KIR",
+};
+
+function countryToISO3(nameOrCode) {
+  if (!nameOrCode) return "";
+  // if already 3-letter code
+  if (ISO2[nameOrCode.toUpperCase()]) return nameOrCode.toUpperCase();
+  return NAME_TO_ISO3[nameOrCode] || nameOrCode.slice(0,3).toUpperCase();
 }
+
+function flagImg(nameOrCode) {
+  if (!nameOrCode) return "";
+  const iso3 = countryToISO3(nameOrCode);
+  const iso2 = ISO2[iso3];
+  if (!iso2) return `<span style="font-size:11px;color:var(--text3)">${nameOrCode}</span>`;
+  return `<img class="flag-img" src="https://flagcdn.com/20x15/${iso2}.png" alt="${iso3}" title="${nameOrCode}">`;
+}
+function countryCell(nameOrCode) {
+  if (!nameOrCode) return "—";
+  const iso3 = countryToISO3(nameOrCode);
+  return `<span class="country-cell">${flagImg(nameOrCode)}<span class="country-code">${iso3||nameOrCode}</span></span>`;
+}
+
+// ── NAVIGATION ────────────────────────────────────────────
+const pageLoaded = {};
+function showPage(id) {
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("active"));
+  document.getElementById("page-"+id).classList.add("active");
+  event.currentTarget.classList.add("active");
+  if (!pageLoaded[id]) { pageLoaded[id]=true; loadPage(id); }
+}
+function loadPage(id) {
+  if (id==="entries-itf") loadItfEntries();
+  else if (id==="entries-jr") loadJrEntries();
+}
+
+// ── RANKINGS FROM REPO ────────────────────────────────────
+const GH_RAW = "https://raw.githubusercontent.com/elias7l/circuit-hub/main";
+let currentCategory = "u16_girls";
+let currentPlayers = [];
+
+async function selectCategory(btn, cat) {
+  document.querySelectorAll("#rank-tabs .week-tab").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  currentCategory = cat;
+  await loadRanking(cat);
+}
+
+async function loadRanking(cat) {
+  document.getElementById("rank-body").innerHTML =
+    '<div class="loading"><div class="spinner"></div><p>Loading ranking...</p></div>';
+  document.getElementById("rank-filters").style.display = "none";
+
+  try {
+    const url = `${GH_RAW}/data/rankings/${cat}.json?t=${Date.now()}`;
+    const r = await fetch(url);
+    if (!r.ok) throw new Error(r.status === 404 ? "Not uploaded yet" : `Error ${r.status}`);
+    const data = await r.json();
+    currentPlayers = data.players || [];
+
+    // populate filters
+    const countries = [...new Set(currentPlayers.map(p=>p.country).filter(Boolean))].sort();
+    const years = [...new Set(currentPlayers.map(p=>p.birth_year).filter(Boolean))].sort((a,b)=>b-a);
+
+    document.getElementById("rank-country").innerHTML =
+      '<option value="">All countries</option>' +
+      countries.map(c=>`<option value="${c}">${c}</option>`).join("");
+    document.getElementById("rank-year").innerHTML =
+      '<option value="">All years</option>' +
+      years.map(y=>`<option value="${y}">${y}</option>`).join("");
+
+    document.getElementById("rank-week-label").textContent = data.week ? `Week ${data.week}` : "";
+    document.getElementById("rank-filters").style.display = "flex";
+    renderRankingTable(currentPlayers);
+  } catch(e) {
+    document.getElementById("rank-body").innerHTML =
+      `<div class="empty-state"><strong>No data yet</strong>${e.message} — upload screenshots via the admin panel.</div>`;
+  }
+}
+
+function filterTable() {
+  const country = document.getElementById("rank-country").value;
+  const year = document.getElementById("rank-year").value;
+  const filtered = currentPlayers.filter(p=>
+    (!country || p.country === country) &&
+    (!year || String(p.birth_year) === year)
+  );
+  renderRankingTable(filtered);
+}
+
+function renderRankingTable(players) {
+  document.getElementById("rank-count").textContent = players.length.toLocaleString() + " players";
+  if (!players.length) {
+    document.getElementById("rank-body").innerHTML =
+      '<div class="empty-state"><strong>No players match</strong>Try different filters.</div>';
+    return;
+  }
+  const rows = players.map((p,i)=>{
+    const rankCls = i < 10 ? "rank-cell rank-top" : "rank-cell";
+    return `<tr>
+      <td class="${rankCls}">${p.rank||"—"}</td>
+      <td class="name-cell">${p.name||"—"}</td>
+      <td>${countryCell(p.country)}</td>
+      <td class="points-cell">${(p.points||0).toLocaleString()}</td>
+      <td class="born-cell">${p.birth_year||"—"}</td>
+    </tr>`;
+  }).join("");
+  document.getElementById("rank-body").innerHTML = `
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>Rank</th><th>Player</th><th>Country</th><th>Points</th><th>Born</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table></div>`;
+}
+
+// ── ITF CALENDAR / ENTRIES ────────────────────────────────
+const ITF = "https://www.itftennis.com/tennis/api";
+const PROXY = "https://corsproxy.io/?url=";
+
+function addDays(d,n){const dt=new Date(d);dt.setDate(dt.getDate()+n);return dt;}
+function fmtDate(s){if(!s)return"—";const[y,m,d]=s.slice(0,10).split("-");return`${d}/${m}/${y}`;}
+function getMonday(d){const dt=new Date(d);const day=dt.getDay();const diff=(day===0)?-6:1-day;dt.setDate(dt.getDate()+diff);dt.setHours(0,0,0,0);return dt;}
+function weekLabel(monday){const end=addDays(monday,6);const mo=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];return`${monday.getDate()} ${mo[monday.getMonth()]} – ${end.getDate()} ${mo[end.getMonth()]}`;}
+
+async function itfGet(path, params={}) {
+  const url = new URL(ITF + path);
+  Object.entries(params).forEach(([k,v])=>url.searchParams.set(k,v));
+  let r;
+  try { r = await fetch(url.toString()); } catch(e) { r = null; }
+  if (!r || !r.ok) r = await fetch(PROXY + encodeURIComponent(url.toString()));
+  if (!r.ok) throw new Error(`ITF ${r.status}`);
+  return r.json();
+}
+
+function itfLevel(name){
+  if(/W100|100k/i.test(name))return"W100";if(/W75|75k/i.test(name))return"W75";
+  if(/W60|60k/i.test(name))return"W60";if(/W50|50k/i.test(name))return"W50";
+  if(/W35|35k/i.test(name))return"W35";if(/W25|25k/i.test(name))return"W25";
+  return"W15";
+}
+function jrLevel(name){
+  if(/Grade\s*A|G\s*A/i.test(name))return"Grade A";
+  if(/Grade\s*1|G\s*1/i.test(name))return"Grade 1";
+  if(/Grade\s*2|G\s*2/i.test(name))return"Grade 2";
+  if(/Grade\s*3|G\s*3/i.test(name))return"Grade 3";
+  return"Junior";
+}
+
+let itfWtTournaments=[], itfJrTournaments=[];
+
+async function loadItfEntries() {
+  const today=new Date().toISOString().slice(0,10);
+  const cutoff=addDays(new Date(),14).toISOString().slice(0,10);
+  try {
+    const data = await itfGet("/TournamentApi/GetCalendar",{
+      circuitCode:"WT",searchString:"",skip:0,take:250,
+      dateFrom:today,dateTo:cutoff,isOrderAscending:"true",orderField:"startDate"
+    });
+    const items=(data.items||[]).filter(t=>{
+      const s=(t.status||t.tournamentStatus||"").toLowerCase();
+      return !s.includes("cancel");
+    });
+    itfWtTournaments=items.map(t=>{
+      const key=(t.tournamentKey||(t.tournamentLink||"").split("/").pop()||"").toLowerCase();
+      return{key,name:t.tournamentName||key,
+        country:t.hostNationCode||t.hostNation||"",
+        surface:t.surfaceDesc||t.surface||"",
+        level:itfLevel(t.tournamentName||""),
+        start_date:(t.startDate||"").slice(0,10),circuit:"WT"};
+    });
+    buildCards(itfWtTournaments,"itf-entries-body","WT");
+  } catch(e) {
+    document.getElementById("itf-entries-body").innerHTML=
+      `<div class="error-box">Could not load: ${e.message}</div>`;
+  }
+}
+
+async function loadJrEntries() {
+  const today=new Date().toISOString().slice(0,10);
+  const cutoff=addDays(new Date(),14).toISOString().slice(0,10);
+  try {
+    const data = await itfGet("/TournamentApi/GetCalendar",{
+      circuitCode:"JG",searchString:"",skip:0,take:250,
+      dateFrom:today,dateTo:cutoff,isOrderAscending:"true",orderField:"startDate"
+    });
+    const items=(data.items||[]).filter(t=>{
+      const s=(t.status||t.tournamentStatus||"").toLowerCase();
+      return !s.includes("cancel");
+    });
+    itfJrTournaments=items.map(t=>{
+      const key=(t.tournamentKey||(t.tournamentLink||"").split("/").pop()||"").toLowerCase();
+      return{key,name:t.tournamentName||key,
+        country:t.hostNationCode||t.hostNation||"",
+        surface:t.surfaceDesc||t.surface||"",
+        level:jrLevel(t.tournamentName||""),
+        start_date:(t.startDate||"").slice(0,10),circuit:"JG"};
+    });
+    buildCards(itfJrTournaments,"jr-entries-body","JG");
+  } catch(e) {
+    document.getElementById("jr-entries-body").innerHTML=
+      `<div class="error-box">Could not load: ${e.message}</div>`;
+  }
+}
+
+function buildCards(tournaments, bodyId, circuit) {
+  const el=document.getElementById(bodyId);
+  if(!tournaments.length){
+    el.innerHTML='<div class="empty-state"><strong>No upcoming tournaments</strong>Nothing in the next 2 weeks.</div>';
+    return;
+  }
+  const weeks={};
+  tournaments.forEach(t=>{
+    const monday=getMonday(t.start_date);
+    const label=weekLabel(monday);
+    if(!weeks[label])weeks[label]=[];
+    weeks[label].push(t);
+  });
+  let html="";
+  Object.entries(weeks).forEach(([label,ts])=>{
+    html+=`<div class="week-section"><div class="week-label">${label}</div><div class="t-grid">`;
+    ts.forEach(t=>{
+      const safeKey=t.key.replace(/[^a-z0-9]/gi,"_");
+      html+=`<div class="t-card">
+        <div class="t-card-name">${t.name}</div>
+        <div class="t-card-meta">
+          <span class="meta-chip">${flagImg(t.country)} ${t.country||"—"}</span>
+          <span class="meta-chip">${fmtDate(t.start_date)}</span>
+          ${t.surface?`<span class="meta-chip">${t.surface}</span>`:""}
+          ${t.level?`<span class="badge badge-level">${t.level}</span>`:""}
+        </div>
+        <button class="btn btn-primary" onclick="openEntryModal('${safeKey}','${circuit}')">
+          View Entry List
+        </button>
+      </div>`;
+    });
+    html+=`</div></div>`;
+  });
+  el.innerHTML=html;
+}
+
+// ── ENTRY MODAL ───────────────────────────────────────────
+let currentModalData=null;
+
+async function openEntryModal(key,circuit) {
+  const allLists={WT:itfWtTournaments,JG:itfJrTournaments};
+  const t=(allLists[circuit]||[]).find(x=>x.key.replace(/[^a-z0-9]/gi,"_")===key);
+  document.getElementById("modal-title").textContent=t?t.name:key;
+  document.getElementById("modal-body").innerHTML=
+    '<div class="loading"><div class="spinner"></div><p>Loading entry list...</p></div>';
+  document.getElementById("entry-modal").classList.add("open");
+  try {
+    const realKey=t?t.key:key.replace(/_/g,"-");
+    const entries=await loadItfEntryList(realKey,circuit);
+    currentModalData=entries;
+    renderModal("MAIN");
+  } catch(e) {
+    document.getElementById("modal-body").innerHTML=
+      `<div class="error-box">Could not load: ${e.message}</div>`;
+  }
+}
+
+async function loadItfEntryList(key,circuit) {
+  const url=new URL(`${ITF}/TournamentApi/GetAcceptanceList`);
+  url.searchParams.set("tournamentKey",key.toLowerCase());
+  url.searchParams.set("circuitCode",circuit);
+  let r;
+  try{r=await fetch(url.toString());}catch(e){r=null;}
+  if(!r||!r.ok) r=await fetch(PROXY+encodeURIComponent(url.toString()));
+  if(!r.ok) throw new Error(`ITF ${r.status}`);
+  const data=await r.json();
+  let root=[];
+  if(Array.isArray(data)&&data.length) root=(data[0].entryClassifications)||[];
+  else if(data&&data.entryClassifications) root=data.entryClassifications;
+  const players=[];
+  for(const cls of root){
+    const code=cls.entryClassificationCode||"";
+    let section;
+    if(["MDA","JR","JA","SE","WC"].includes(code))section="MAIN";
+    else if(code==="Q")section="QUAL";
+    else if(code==="A")section="ALT";
+    else continue;
+    for(const entry of cls.entries||[]){
+      for(const p of entry.players||[]){
+        const dob=p.dateOfBirth||"";
+        players.push({
+          pos:entry.positionDisplay||"",
+          name:`${p.givenName||""} ${p.familyName||""}`.trim(),
+          country:p.nationalityCode||"",
+          wta_rank:p.atpWtaRank||"",
+          itf_rank:p.itfBTRank||"",
+          birth_year:dob?parseInt(dob.slice(0,4)):null,
+          section
+        });
+      }
+    }
+  }
+  return players;
+}
+
+function renderModal(section) {
+  if(!currentModalData)return;
+  const players=currentModalData.filter(p=>p.section===section);
+  const all=currentModalData;
+  const countries=[...new Set(all.map(p=>p.country).filter(Boolean))].sort();
+  const years=[...new Set(all.map(p=>p.birth_year).filter(Boolean))].sort((a,b)=>b-a);
+  const mf=document.getElementById("mf-country")?.value||"";
+  const yf=document.getElementById("mf-year")?.value||"";
+  const filtered=players.filter(p=>(!mf||p.country===mf)&&(!yf||String(p.birth_year)===yf));
+  const mc=all.filter(p=>p.section==="MAIN").length;
+  const qc=all.filter(p=>p.section==="QUAL").length;
+  const ac=all.filter(p=>p.section==="ALT").length;
+  let html=`<div class="seg-tabs" style="margin-bottom:14px;">
+    <button class="seg-tab ${section==="MAIN"?"active":""}" onclick="renderModal('MAIN')">Main Draw <span class="badge badge-md" style="margin-left:4px">${mc}</span></button>
+    <button class="seg-tab ${section==="QUAL"?"active":""}" onclick="renderModal('QUAL')">Qualifying <span class="badge badge-q" style="margin-left:4px">${qc}</span></button>
+    ${ac?`<button class="seg-tab ${section==="ALT"?"active":""}" onclick="renderModal('ALT')">Alt <span class="badge badge-alt" style="margin-left:4px">${ac}</span></button>`:""}
+  </div>
+  <div class="modal-filters" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;">
+    <select id="mf-country" onchange="renderModal('${section}')">
+      <option value="">All countries</option>
+      ${countries.map(c=>`<option value="${c}" ${c===mf?"selected":""}>${c}</option>`).join("")}
+    </select>
+    <select id="mf-year" onchange="renderModal('${section}')">
+      <option value="">All years</option>
+      ${years.map(y=>`<option value="${y}" ${String(y)===yf?"selected":""}>${y}</option>`).join("")}
+    </select>
+    <span class="result-count">${filtered.length} players</span>
+  </div>`;
+  if(!filtered.length){
+    html+='<div class="empty-state"><strong>No players</strong></div>';
+  } else {
+    html+=`<div class="table-wrap"><table>
+      <thead><tr><th>#</th><th>Player</th><th>Country</th><th>Rank</th><th>Born</th></tr></thead>
+      <tbody>${filtered.map(p=>`<tr>
+        <td class="rank-cell">${p.pos}</td>
+        <td class="name-cell">${p.name||"—"}</td>
+        <td>${countryCell(p.country)}</td>
+        <td class="points-cell">${p.wta_rank||p.itf_rank||"—"}</td>
+        <td class="born-cell">${p.birth_year||"—"}</td>
+      </tr>`).join("")}</tbody>
+    </table></div>`;
+  }
+  document.getElementById("modal-body").innerHTML=html;
+}
+
+function closeModal(){
+  document.getElementById("entry-modal").classList.remove("open");
+  currentModalData=null;
+}
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal();});
+
+// ── INIT ──────────────────────────────────────────────────
+// Auto-load first ranking category
+selectCategory(document.querySelector("#rank-tabs .week-tab"), "u16_girls");
 </script>
 </body>
 </html>
